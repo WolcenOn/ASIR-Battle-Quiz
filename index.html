@@ -222,6 +222,54 @@
       margin-top: 10px;
     }
 
+    /* ----------------------------------------------------------------------
+       Gestor de paquetes JSON
+       ----------------------------------------------------------------------
+       Un paquete representa un archivo/conjunto de ejercicios importado.
+       Esto permite mezclar asignaturas: Lenguaje de Marcas, Inglés, BBDD, etc.
+       ---------------------------------------------------------------------- */
+    .package-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .package-manager {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .package-list {
+      display: grid;
+      gap: 10px;
+      max-height: 260px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .package-row {
+      display: grid;
+      grid-template-columns: auto minmax(150px, 1.1fr) minmax(140px, .9fr) auto auto auto;
+      gap: 8px;
+      align-items: center;
+      padding: 10px;
+      background: rgba(31, 41, 55, .55);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .package-row input[type="checkbox"] {
+      width: auto;
+    }
+
+    .package-count {
+      color: var(--muted);
+      font-size: .82rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
     .schema-example {
       max-height: 360px;
       overflow: auto;
@@ -428,6 +476,46 @@
       font-size: .75rem;
     }
 
+    .test-panel {
+      display: grid;
+      gap: 12px;
+      min-height: 390px;
+      padding: 16px;
+      background: var(--code);
+    }
+
+    .test-question {
+      color: var(--text);
+      font-weight: 900;
+      line-height: 1.5;
+    }
+
+    .test-options {
+      display: grid;
+      gap: 10px;
+    }
+
+    .test-option {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 12px;
+      color: #d1fae5;
+      cursor: pointer;
+      background: rgba(31, 41, 55, .78);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .test-option:hover {
+      border-color: rgba(56, 189, 248, .7);
+    }
+
+    .test-option input {
+      width: auto;
+      margin-top: 3px;
+    }
+
     /* --------------------------------------------------------------------------
        8. Feedback, historial y teoría
        -------------------------------------------------------------------------- */
@@ -500,6 +588,7 @@
        -------------------------------------------------------------------------- */
     @media (max-width: 1100px) {
       .config-grid,
+      .package-grid,
       .work,
       .study,
       .fight-row {
@@ -516,11 +605,276 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
+      .package-row {
+        grid-template-columns: 1fr;
+      }
+
+      .package-row input[type="checkbox"] {
+        justify-self: start;
+      }
+
       .mission-detail {
         grid-template-columns: 1fr;
         max-height: 260px;
       }
     }
+  
+
+    /* --------------------------------------------------------------------------
+       10. Mejoras específicas para la pantalla inicial en móvil
+       --------------------------------------------------------------------------
+       La pantalla de configuración puede crecer mucho al desplegar importación,
+       estructura JSON y gestor de paquetes. Estas reglas evitan que el modal
+       quede cortado en móviles y hacen que se pueda trabajar con el dedo.
+       -------------------------------------------------------------------------- */
+    .setup {
+      align-items: start;
+      place-items: start center;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .setup-box {
+      margin: 0 auto;
+      max-height: none;
+    }
+
+    .setup-actions {
+      position: sticky;
+      bottom: 0;
+      z-index: 5;
+      padding: 12px 0 0;
+      background: linear-gradient(180deg, rgba(17, 24, 39, 0), rgba(17, 24, 39, .98) 28%);
+    }
+
+    .setup summary {
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      user-select: none;
+    }
+
+    .setup input,
+    .setup select,
+    .setup textarea,
+    .setup button {
+      min-height: 44px;
+      font-size: 1rem;
+    }
+
+    .setup textarea#importBox {
+      min-height: 150px;
+      max-height: 38vh;
+    }
+
+    .package-manager h3 {
+      margin: 0;
+    }
+
+    .package-row input[type="text"] {
+      min-width: 0;
+    }
+
+    .package-row button {
+      padding-inline: 12px;
+    }
+
+    @media (max-height: 760px) {
+      .setup {
+        padding-block: 8px;
+      }
+
+      .setup-box {
+        padding: 16px;
+        border-radius: 18px;
+      }
+
+      .setup-box > p {
+        margin-block: 6px 10px;
+      }
+
+      .config-grid {
+        margin-top: 10px;
+      }
+
+      .package-list {
+        max-height: 180px;
+      }
+
+      .schema-example {
+        max-height: 240px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      body {
+        font-size: 15px;
+      }
+
+      header {
+        padding: 16px 12px 6px;
+      }
+
+      header h2 {
+        font-size: clamp(2rem, 14vw, 3.6rem);
+      }
+
+      .app {
+        padding: 10px;
+        gap: 10px;
+      }
+
+      .setup {
+        padding: 8px;
+      }
+
+      .setup-box {
+        width: 100%;
+        padding: 14px;
+        border-radius: 18px;
+      }
+
+      .setup-box h1 {
+        font-size: clamp(1.7rem, 11vw, 3rem);
+        line-height: .95;
+      }
+
+      .setup-box > p {
+        font-size: .95rem;
+        line-height: 1.45;
+      }
+
+      .config-grid,
+      .package-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .import-panel {
+        gap: 8px;
+      }
+
+      .mini {
+        padding: 10px;
+        font-size: .95rem;
+      }
+
+      .package-list {
+        max-height: 220px;
+      }
+
+      .package-row {
+        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-areas:
+          "active name"
+          "active subject"
+          "count count"
+          "save delete";
+        gap: 8px;
+        align-items: start;
+      }
+
+      .package-row input[type="checkbox"] {
+        grid-area: active;
+        width: 22px;
+        height: 22px;
+        margin-top: 11px;
+        justify-self: center;
+      }
+
+      .package-row input[type="text"]:nth-of-type(1) {
+        grid-area: name;
+      }
+
+      .package-row input[type="text"]:nth-of-type(2) {
+        grid-area: subject;
+      }
+
+      .package-count {
+        grid-area: count;
+        white-space: normal;
+      }
+
+      .package-row button {
+        width: 100%;
+      }
+
+      .package-row button[data-action="save"] {
+        grid-area: save;
+      }
+
+      .package-row button[data-action="delete"] {
+        grid-area: delete;
+      }
+
+      .setup-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .setup-actions button,
+      .actions button {
+        width: 100%;
+      }
+
+      .schema-example {
+        max-height: 260px;
+        font-size: .82rem;
+      }
+
+      .hud {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .stat {
+        min-height: 76px;
+        padding: 10px;
+      }
+
+      .stat strong {
+        font-size: 1.08rem;
+      }
+
+      .work,
+      .study,
+      .fight-row {
+        grid-template-columns: 1fr;
+      }
+
+      #editor,
+      #ref,
+      .puzzle {
+        min-height: 280px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .setup-box {
+        padding: 12px;
+      }
+
+      .setup textarea#importBox {
+        min-height: 120px;
+      }
+
+      .package-list {
+        max-height: 180px;
+      }
+
+      .schema-example {
+        max-height: 220px;
+      }
+
+      .mission-detail {
+        max-height: 220px;
+      }
+    }
+
   </style>
 </head>
 
@@ -533,8 +887,8 @@
       <h1>ASIR Battle</h1>
 
       <p>
-        Versión con enunciados claros generados automáticamente.
-        Puedes importar el mismo JSON que ya tienes.
+        Configura la partida, activa los paquetes que quieras usar e importa ejercicios desde JSON.
+        La pantalla está adaptada para móvil y se puede desplazar completa.
       </p>
 
       <div class="config-grid">
@@ -556,6 +910,7 @@
             <option value="css">CSS</option>
             <option value="sql">SQL</option>
             <option value="sqlpuzzle">Puzzles SQL</option>
+            <option value="test">Test</option>
           </select>
         </div>
 
@@ -614,6 +969,28 @@
             <strong>Opción 1:</strong> selecciona un archivo <code>.json</code>
             de tu ordenador.
             <strong>Opción 2:</strong> pega el JSON en el cuadro de texto.
+            Cada importación se guardará como un <strong>paquete</strong> que podrás activar,
+            desactivar, renombrar, etiquetar por asignatura o borrar.
+          </div>
+
+          <div class="package-grid">
+            <div class="field">
+              <label for="packageName">Nombre del paquete</label>
+              <input
+                id="packageName"
+                type="text"
+                placeholder="Ej.: Inglés · Vocabulario unidad 1"
+              />
+            </div>
+
+            <div class="field">
+              <label for="packageSubject">Asignatura</label>
+              <input
+                id="packageSubject"
+                type="text"
+                placeholder="Ej.: Inglés, Lenguaje de Marcas, BBDD"
+              />
+            </div>
           </div>
 
           <input id="jsonFile" type="file" accept="application/json,.json" />
@@ -626,10 +1003,10 @@
 
           <div style="display:flex;gap:10px;flex-wrap:wrap">
             <button class="secondary" id="importBtn">
-              Guardar ejercicios del cuadro
+              Guardar como paquete
             </button>
             <button class="ghost" id="clearImported">
-              Borrar importados
+              Borrar todos los paquetes
             </button>
           </div>
 
@@ -644,7 +1021,7 @@
               <strong>Instrucción sugerida para una IA:</strong><br />
               Genera un array JSON válido para este juego. Cada objeto debe usar
               uno de estos tipos: <code>xml</code>, <code>html</code>,
-              <code>css</code>, <code>sql</code> o <code>sqlpuzzle</code>.
+              <code>css</code>, <code>sql</code>, <code>sqlpuzzle</code> o <code>test</code>.
               Devuelve solo JSON, sin Markdown.
             </div>
 
@@ -671,11 +1048,34 @@
     "starter": "&lt;usuario&gt;\n  &lt;nombre&gt;Ana&lt;/nombre&gt;\n  &lt;activo&gt;sí&lt;/activo&gt;\n&lt;/usuario&gt;",
     "hint": "activo debe ser true/false/1/0 y falta el atributo id.",
     "theory": "Explicación teórica para repasar."
+  },
+  {
+    "m": "test",
+    "title": "Test · XML básico",
+    "text": "Elige la opción correcta.",
+    "question": "¿Qué significa que un XML esté bien formado?",
+    "options": [
+      "Que tiene una única raíz y etiquetas bien anidadas.",
+      "Que siempre tiene un XSD externo.",
+      "Que no usa atributos.",
+      "Que solo contiene texto."
+    ],
+    "answer": 0,
+    "explanation": "Un XML bien formado necesita una única raíz, cierres correctos y anidación correcta.",
+    "hint": "Piensa en las reglas mínimas de sintaxis XML."
   }
 ]</pre>
           </details>
         </div>
       </details>
+
+      <section class="package-manager">
+        <h3 style="margin:0">Paquetes cargados</h3>
+        <p id="packageSummary" style="margin:0;color:var(--muted)">
+          Todavía no hay paquetes importados.
+        </p>
+        <div id="packageList" class="package-list"></div>
+      </section>
 
       <div class="setup-actions">
         <button class="ghost" id="showHistory">Ver historial</button>
@@ -783,6 +1183,7 @@
 
         <textarea id="editor"></textarea>
         <div id="puzzle" class="puzzle hidden"></div>
+        <div id="testPanel" class="test-panel hidden"></div>
       </article>
 
       <article class="card">
@@ -845,7 +1246,9 @@
     /* --------------------------------------------------------------------------
        1. Constantes de almacenamiento
        -------------------------------------------------------------------------- */
+    // K_IMPORT se conserva solo para migrar datos de versiones anteriores.
     const K_IMPORT = 'asir_v6_imported';
+    const K_PACKAGES = 'asir_v7_packages';
     const K_HIST = 'asir_v6_history';
     const K_BEST = 'asir_v6_best';
 
@@ -949,6 +1352,21 @@
         ],
         ref: 'Columnas, tabla, filtro, orden.',
         hint: 'SELECT, FROM, WHERE, ORDER BY.'
+      },
+      {
+        m: 'test',
+        title: 'Test base · XML bien formado',
+        text: 'Elige la opción correcta sobre XML.',
+        question: '¿Cuál de estas condiciones es obligatoria para que un documento XML esté bien formado?',
+        options: [
+          'Puede tener varias etiquetas raíz si están bien cerradas.',
+          'Debe tener una única raíz y las etiquetas deben estar correctamente anidadas.',
+          'Debe usar siempre atributos en todos los elementos.',
+          'Debe incluir obligatoriamente un archivo XSD.'
+        ],
+        answer: 1,
+        explanation: 'Un XML bien formado necesita una única raíz, cierres correctos y anidación correcta. El XSD sirve para validar estructura y tipos, pero no es obligatorio para que el XML esté bien formado.',
+        hint: 'Piensa en las reglas mínimas de XML antes de validar contra un XSD.'
       }
     ];
 
@@ -981,6 +1399,7 @@
     const rf = $('ref');
     const checks = $('checks');
     const pz = $('puzzle');
+    const testPanel = $('testPanel');
 
     /* --------------------------------------------------------------------------
        5. Utilidades generales
@@ -1058,7 +1477,8 @@
         html: 'HTML: revisa etiquetas semánticas, padres/hijos permitidos, formularios y accesibilidad.',
         css: 'CSS: revisa selector exacto, propiedades, unidades, flex, grid y media queries.',
         sql: 'SQL: SELECT, FROM, JOIN/ON, WHERE, GROUP BY, HAVING, ORDER BY. UPDATE/DELETE con WHERE.',
-        sqlpuzzle: 'Puzzle SQL: identifica qué pieza selecciona, qué pieza indica tabla, cuál filtra, cuál agrupa y cuál ordena.'
+        sqlpuzzle: 'Puzzle SQL: identifica qué pieza selecciona, qué pieza indica tabla, cuál filtra, cuál agrupa y cuál ordena.',
+        test: 'Test: lee bien el enunciado, descarta opciones imposibles y revisa la explicación después de responder.'
       }[moduleType] || '';
     }
 
@@ -1106,6 +1526,16 @@
         if (!Array.isArray(raw.pieces) || !Array.isArray(raw.solution)) {
           throw Error(`${exercise.title}: puzzle necesita pieces y solution.`);
         }
+      } else if (moduleType === 'test') {
+        if (!Array.isArray(raw.options) || raw.options.length < 2) {
+          throw Error(`${exercise.title}: test necesita options con al menos 2 opciones.`);
+        }
+        if (raw.answer === undefined && raw.correct === undefined) {
+          throw Error(`${exercise.title}: test necesita answer o correct.`);
+        }
+        exercise.question = raw.question || raw.text || 'Selecciona la respuesta correcta.';
+        exercise.answer = raw.answer !== undefined ? raw.answer : raw.correct;
+        exercise.explanation = raw.explanation || raw.ref || 'Revisa la respuesta correcta.';
       } else {
         throw Error(`Tipo no soportado: ${moduleType}`);
       }
@@ -1117,8 +1547,69 @@
       return exercise;
     }
 
+    function packageId() {
+      return `pkg_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+    }
+
+    function defaultPackageName(source) {
+      if (source && source !== 'cuadro') {
+        return source.replace(/^el archivo\s+/i, '').replace(/\.json$/i, '');
+      }
+
+      return `Paquete ${new Date().toLocaleDateString()}`;
+    }
+
+    function readPackageForm(source) {
+      return {
+        name: $('packageName').value.trim() || defaultPackageName(source),
+        subject: $('packageSubject').value.trim() || 'General'
+      };
+    }
+
+    function getPackages() {
+      const current = get(K_PACKAGES, null);
+
+      if (Array.isArray(current)) {
+        return current;
+      }
+
+      // Migración automática desde versiones anteriores, donde todos los
+      // ejercicios importados vivían en una sola lista plana.
+      const legacyExercises = get(K_IMPORT, []);
+
+      if (!legacyExercises.length) {
+        set(K_PACKAGES, []);
+        return [];
+      }
+
+      const migrated = [{
+        id: packageId(),
+        name: 'Importados antiguos',
+        subject: 'General',
+        enabled: true,
+        createdAt: new Date().toISOString(),
+        exercises: legacyExercises
+      }];
+
+      set(K_PACKAGES, migrated);
+      return migrated;
+    }
+
+    function savePackages(packages) {
+      set(K_PACKAGES, packages);
+      renderPackages();
+      rebuild();
+    }
+
+    function activePackageExercises() {
+      return getPackages()
+        .filter(pkg => pkg.enabled)
+        .flatMap(pkg => pkg.exercises || []);
+    }
+
     function rebuild() {
-      const imported = get(K_IMPORT, []).map(normalize);
+      const imported = activePackageExercises().map(normalize);
+
       bank = $('basePack').value === 'off'
         ? imported
         : [...BASE.map(normalize), ...imported];
@@ -1146,6 +1637,82 @@
       }
     }
 
+    function renderPackages() {
+      const packages = getPackages();
+      const list = $('packageList');
+      const summary = $('packageSummary');
+
+      if (!list || !summary) return;
+
+      list.innerHTML = '';
+
+      if (!packages.length) {
+        summary.textContent = 'Todavía no hay paquetes importados.';
+        return;
+      }
+
+      const enabledCount = packages.filter(pkg => pkg.enabled).length;
+      const exerciseCount = packages.reduce((total, pkg) => total + (pkg.exercises || []).length, 0);
+
+      summary.textContent =
+        `${packages.length} paquete(s), ${enabledCount} activo(s), ${exerciseCount} ejercicio(s) importado(s).`;
+
+      packages.forEach(pkg => {
+        const row = document.createElement('div');
+        row.className = 'package-row';
+        row.innerHTML = `
+          <input
+            type="checkbox"
+            data-action="toggle"
+            data-id="${esc(pkg.id)}"
+            ${pkg.enabled ? 'checked' : ''}
+            title="Usar este paquete en la partida"
+          />
+          <input
+            type="text"
+            data-field="name"
+            data-id="${esc(pkg.id)}"
+            value="${esc(pkg.name || 'Paquete sin nombre')}"
+            aria-label="Nombre del paquete"
+          />
+          <input
+            type="text"
+            data-field="subject"
+            data-id="${esc(pkg.id)}"
+            value="${esc(pkg.subject || 'General')}"
+            aria-label="Asignatura del paquete"
+          />
+          <span class="package-count">${(pkg.exercises || []).length} ejercicios</span>
+          <button class="secondary" data-action="save" data-id="${esc(pkg.id)}">Guardar</button>
+          <button class="danger" data-action="delete" data-id="${esc(pkg.id)}">Borrar</button>
+        `;
+        list.appendChild(row);
+      });
+    }
+
+    function updatePackage(packageIdToUpdate, patch) {
+      const packages = getPackages().map(pkg =>
+        pkg.id === packageIdToUpdate ? { ...pkg, ...patch } : pkg
+      );
+
+      savePackages(packages);
+    }
+
+    function deletePackage(packageIdToDelete) {
+      const packages = getPackages().filter(pkg => pkg.id !== packageIdToDelete);
+      savePackages(packages);
+    }
+
+    function savePackageMeta(packageIdToUpdate) {
+      const nameInput = document.querySelector(`[data-field="name"][data-id="${packageIdToUpdate}"]`);
+      const subjectInput = document.querySelector(`[data-field="subject"][data-id="${packageIdToUpdate}"]`);
+
+      updatePackage(packageIdToUpdate, {
+        name: nameInput?.value.trim() || 'Paquete sin nombre',
+        subject: subjectInput?.value.trim() || 'General'
+      });
+    }
+
     function importExercisesFromText(text, source = 'cuadro') {
       try {
         const parsed = JSON.parse(text);
@@ -1155,11 +1722,28 @@
         }
 
         const normalized = parsed.map(normalize);
-        set(K_IMPORT, [...get(K_IMPORT, []), ...normalized]);
+        const meta = readPackageForm(source);
+        const packages = getPackages();
+
+        packages.push({
+          id: packageId(),
+          name: meta.name,
+          subject: meta.subject,
+          enabled: true,
+          createdAt: new Date().toISOString(),
+          source,
+          exercises: normalized
+        });
+
+        set(K_PACKAGES, packages);
 
         $('importStatus').textContent =
-          `Guardados ${normalized.length} ejercicios desde ${source}. Ya puedes elegir módulo y empezar.`;
+          `Guardado el paquete “${meta.name}” (${meta.subject}) con ${normalized.length} ejercicios desde ${source}.`;
 
+        $('packageName').value = '';
+        $('packageSubject').value = '';
+
+        renderPackages();
         rebuild();
       } catch (error) {
         $('importStatus').textContent = `Error: ${error.message}`;
@@ -1285,6 +1869,20 @@
             <strong>Pistas de estructura:</strong>
             SELECT suele ir antes de FROM; WHERE filtra; GROUP BY agrupa;
             HAVING filtra grupos; ORDER BY ordena al final.
+          </div>
+        `;
+      }
+
+      if (exercise.m === 'test') {
+        return `
+          <div class="mini">
+            <strong>Qué tienes que conseguir:</strong><br>
+            Lee la pregunta, selecciona una opción y pulsa <strong>Validar / Atacar</strong>.
+            Al validar verás si has acertado y la explicación correspondiente.
+          </div>
+          <div class="mini">
+            <strong>Pregunta:</strong><br>
+            ${esc(exercise.question || exercise.text)}
           </div>
         `;
       }
@@ -1721,6 +2319,50 @@
       return [Math.round((passed / total) * 100), bad];
     }
 
+    function correctTestIndex(exercise) {
+      if (typeof exercise.answer === 'number') return exercise.answer;
+      return (exercise.options || []).findIndex(option => norm(option) === norm(exercise.answer));
+    }
+
+    function renderTest(exercise) {
+      const options = (exercise.options || [])
+        .map((option, index) => `
+          <label class="test-option">
+            <input type="radio" name="testAnswer" value="${index}" />
+            <span>${esc(option)}</span>
+          </label>
+        `)
+        .join('');
+
+      testPanel.innerHTML = `
+        <div class="test-question">${esc(exercise.question || exercise.text)}</div>
+        <div class="test-options">${options}</div>
+      `;
+    }
+
+    function validateTest(exercise) {
+      const selected = testPanel.querySelector('input[name="testAnswer"]:checked');
+      if (!selected) {
+        add('bad', 'Selecciona una respuesta antes de validar.');
+        return [0, true];
+      }
+
+      const selectedIndex = Number(selected.value);
+      const correctIndex = correctTestIndex(exercise);
+      const correctText = exercise.options?.[correctIndex] ?? String(exercise.answer);
+
+      if (selectedIndex === correctIndex) {
+        add('good', `Respuesta correcta: <code>${esc(correctText)}</code>.`);
+        add('good', esc(exercise.explanation || 'Buen trabajo.'));
+        return [100, false];
+      }
+
+      add('bad', `Respuesta incorrecta. Has elegido: <code>${esc(exercise.options[selectedIndex])}</code>.`);
+      add('warn', `Respuesta correcta: <code>${esc(correctText)}</code>.`);
+      add('warn', esc(exercise.explanation || 'Revisa la teoría asociada al ejercicio.'));
+      return [0, true];
+    }
+
     /* --------------------------------------------------------------------------
        10. Generación de soluciones y XSD educativo
        -------------------------------------------------------------------------- */
@@ -1846,6 +2488,7 @@ ${children}
     function refFor(exercise) {
       if (exercise.m === 'xml') return makeXSD(exercise);
       if (exercise.m === 'sqlpuzzle') return exercise.ref || 'Ordena las piezas sin ver la solución completa.';
+      if (exercise.m === 'test') return exercise.ref || exercise.explanation || 'Selecciona la respuesta correcta y valida.';
 
       return exercise.ref || exercise.solution || '';
     }
@@ -1853,6 +2496,11 @@ ${children}
     function solutionFor(exercise) {
       if (exercise.m === 'xml') return solXML(exercise);
       if (exercise.m === 'sqlpuzzle') return exercise.solution.join('\n');
+      if (exercise.m === 'test') {
+        const index = correctTestIndex(exercise);
+        const answer = exercise.options?.[index] ?? String(exercise.answer);
+        return `Respuesta correcta: ${answer}\n\nExplicación: ${exercise.explanation || exercise.ref || ''}`;
+      }
 
       return exercise.solution || exercise.ref || 'Sin solución definida.';
     }
@@ -1871,7 +2519,9 @@ ${children}
 
       $('leftTitle').textContent = exercise.m === 'sqlpuzzle'
         ? 'Puzzle SQL'
-        : `${exercise.m.toUpperCase()} editor`;
+        : exercise.m === 'test'
+          ? 'Pregunta tipo test'
+          : `${exercise.m.toUpperCase()} editor`;
 
       $('rightTitle').textContent = exercise.m === 'xml'
         ? 'Archivo XSD'
@@ -1885,11 +2535,18 @@ ${children}
 
       if (exercise.m === 'sqlpuzzle') {
         ed.classList.add('hidden');
+        testPanel.classList.add('hidden');
         pz.classList.remove('hidden');
         renderPuzzle(exercise);
+      } else if (exercise.m === 'test') {
+        ed.classList.add('hidden');
+        pz.classList.add('hidden');
+        testPanel.classList.remove('hidden');
+        renderTest(exercise);
       } else {
         ed.classList.remove('hidden');
         pz.classList.add('hidden');
+        testPanel.classList.add('hidden');
       }
 
       msg('🧪 Reto cargado', 'Lee el bloque “Qué tienes que conseguir” antes de resolver.');
@@ -1961,7 +2618,9 @@ ${children}
             ? validateCSS(exercise)
             : exercise.m === 'sql'
               ? validateSQL(exercise)
-              : validatePuzzle(exercise);
+              : exercise.m === 'sqlpuzzle'
+                ? validatePuzzle(exercise)
+                : validateTest(exercise);
 
       $('progress').style.width = `${Math.min(100, result[0])}%`;
 
@@ -2150,15 +2809,45 @@ ${children}
       try {
         const text = await file.text();
         $('importBox').value = text;
+
+        if (!$('packageName').value.trim()) {
+          $('packageName').value = file.name.replace(/\.json$/i, '');
+        }
+
         importExercisesFromText(text, `el archivo ${file.name}`);
       } catch (error) {
         $('importStatus').textContent = `Error leyendo archivo: ${error.message}`;
       }
     };
 
+    $('packageList').onclick = event => {
+      const target = event.target;
+      const id = target.dataset?.id;
+
+      if (!id) return;
+
+      if (target.dataset.action === 'toggle') {
+        updatePackage(id, { enabled: target.checked });
+        return;
+      }
+
+      if (target.dataset.action === 'save') {
+        savePackageMeta(id);
+        $('importStatus').textContent = 'Datos del paquete actualizados.';
+        return;
+      }
+
+      if (target.dataset.action === 'delete') {
+        deletePackage(id);
+        $('importStatus').textContent = 'Paquete borrado.';
+      }
+    };
+
     $('clearImported').onclick = () => {
+      localStorage.removeItem(K_PACKAGES);
       localStorage.removeItem(K_IMPORT);
-      $('importStatus').textContent = 'Ejercicios importados borrados.';
+      $('importStatus').textContent = 'Todos los paquetes importados han sido borrados.';
+      renderPackages();
       rebuild();
     };
 
@@ -2176,7 +2865,8 @@ ${children}
         $('auto').value !== 'on' ||
         !started ||
         mode === 'fight' ||
-        all[cur]?.m === 'sqlpuzzle'
+        all[cur]?.m === 'sqlpuzzle' ||
+        all[cur]?.m === 'test'
       ) {
         return;
       }
@@ -2188,6 +2878,7 @@ ${children}
     /* --------------------------------------------------------------------------
        14. Arranque
        -------------------------------------------------------------------------- */
+    renderPackages();
     rebuild();
     filter();
     renderHist();
