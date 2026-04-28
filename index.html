@@ -2488,7 +2488,16 @@ ${children}
     function refFor(exercise) {
       if (exercise.m === 'xml') return makeXSD(exercise);
       if (exercise.m === 'sqlpuzzle') return exercise.ref || 'Ordena las piezas sin ver la solución completa.';
-      if (exercise.m === 'test') return exercise.ref || exercise.explanation || 'Selecciona la respuesta correcta y valida.';
+
+      /*
+       * En los test no mostramos ref/explanation al cargar la pregunta,
+       * porque puede revelar la respuesta antes de que el alumno conteste.
+       * La ayuda aparece solo al pulsar “Pista” y la respuesta completa
+       * solo al pulsar “Ver solución” o al fallar/perder.
+       */
+      if (exercise.m === 'test') {
+        return 'Lee la pregunta, elige una opción y pulsa “Validar / Atacar”.\n\nPulsa “Pista” si necesitas ayuda.';
+      }
 
       return exercise.ref || exercise.solution || '';
     }
@@ -2763,9 +2772,27 @@ ${children}
     $('hint').onclick = () => {
       if (!started) startGame();
 
+      const exercise = all[cur];
+      const hintText = exercise.hint || 'Revisa el enunciado y descarta las opciones claramente incorrectas.';
+
       checks.innerHTML = '';
-      msg('💡 Pista', all[cur].hint || 'Revisa la referencia.');
-      add('warn', all[cur].hint || 'Revisa la referencia.');
+      msg('💡 Pista', hintText);
+      add('warn', hintText);
+
+      /*
+       * Para test, la referencia empieza oculta/neutra.
+       * Al pedir pista, mostramos ayuda ampliada en el panel de referencia.
+       * No incluimos literalmente “Respuesta correcta” aquí para reservarlo
+       * para el botón “Ver solución”.
+       */
+      if (exercise.m === 'test') {
+        rf.value = [
+          `Pista: ${hintText}`,
+          '',
+          exercise.ref ? `Referencia: ${exercise.ref}` : '',
+          exercise.explanation ? `Explicación relacionada: ${exercise.explanation}` : ''
+        ].filter(Boolean).join('\n');
+      }
     };
 
     $('theoryBtn').onclick = () => {
