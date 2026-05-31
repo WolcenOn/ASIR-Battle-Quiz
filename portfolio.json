@@ -1,0 +1,10 @@
+{
+  "categoria": "Juegos",
+  "icono": "🎮",
+  "etiquetas": ["ASIR", "quiz", "juego", "educación", "repaso"],
+  "descripcion": "Juego de preguntas para repasar contenidos técnicos de ASIR de forma interactiva.",
+  "demo": "",
+  "destacado": true,
+  "orden": 9,
+  "ocultar": false
+}
